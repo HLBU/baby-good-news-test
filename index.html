@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="来自未来的宝宝喜报小测版，上传宝宝照片，逐步生成未来高光身份、写真预览和分享卡。"
+    />
+    <title>来自未来的宝宝喜报小测版</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="mobile-shell">
+      <section class="app-card" aria-label="来自未来的宝宝喜报小测版">
+        <header class="app-header">
+          <a class="brand" href="#top" aria-label="来自未来的宝宝喜报">
+            <span>来自未来的</span>
+            <strong>宝宝喜报</strong>
+          </a>
+          <span class="beta-pill">内测版</span>
+        </header>
+
+        <div class="progress-wrap" aria-label="体验进度">
+          <div class="progress-topline">
+            <span id="stepLabel">准备开始</span>
+          </div>
+          <div class="progress-bar" aria-hidden="true">
+            <span id="progressFill"></span>
+          </div>
+        </div>
+
+        <section class="screen cover-screen is-active" data-screen="cover">
+          <h1>谁懂啊，我家宝宝超级棒！</h1>
+          <p class="lead">扫描小小天赋，定制专属高光写真</p>
+
+          <div class="cover-envelope" aria-hidden="true">
+            <span class="cover-glow"></span>
+            <span class="cover-letter">宝宝喜报</span>
+          </div>
+
+          <div class="cover-teasers" aria-label="体验内容">
+            <span>未来高光时刻</span>
+            <span>专属写真预览</span>
+            <span>晒娃分享卡</span>
+          </div>
+
+          <button class="primary-action" type="button" id="coverStart">开始</button>
+        </section>
+
+        <section class="screen upload-screen" data-screen="upload" hidden>
+          <h1>扫描宝宝的奇妙天赋</h1>
+
+          <label class="upload-box" for="babyUpload">
+            <input id="babyUpload" type="file" accept="image/*" />
+            <span class="upload-icon" aria-hidden="true"></span>
+            <strong id="uploadTitle">点击上传宝宝照片</strong>
+            <small id="uploadHint">支持 JPG / PNG，建议宝宝单人入镜</small>
+            <img id="uploadPreview" alt="宝宝照片预览" />
+          </label>
+
+          <button class="primary-action" type="button" id="uploadNext" disabled>下一步：回答生活小观察</button>
+        </section>
+
+        <section class="screen" data-screen="quiz" hidden>
+          <p class="eyebrow">5 个生活小观察</p>
+          <h2 id="quizTitle">定位宝宝的小小特质</h2>
+          <div class="quiz-meta">
+            <span id="quizCount">1/5</span>
+            <span>选择后再点下一题</span>
+          </div>
+          <div class="quiz-bars" id="quizBars" aria-hidden="true"></div>
+          <p class="quiz-question" id="quizQuestion"></p>
+          <div class="option-list" id="quizOptions"></div>
+          <button class="primary-action" type="button" id="quizNext" disabled>下一题</button>
+        </section>
+
+        <section class="screen scan-screen" data-screen="scan" hidden>
+          <p class="eyebrow">轻盲盒揭晓</p>
+          <h2>宝宝的天赋报告已经准备好了</h2>
+          <button class="scan-card" type="button" id="scanButton">
+            <span class="envelope" aria-hidden="true"></span>
+            <strong id="scanTitle">点击查收天赋报告</strong>
+          </button>
+        </section>
+
+        <section class="screen" data-screen="result" hidden>
+          <h2>宝宝的天赋报告</h2>
+          <article class="result-card">
+            <canvas id="radarCanvas" width="260" height="230" aria-label="宝宝闪光点雷达图"></canvas>
+            <div class="identity-copy">
+              <h3 id="identityName">小小世界观察员</h3>
+              <strong id="identityTitle">好奇心正在发光</strong>
+              <p id="identitySummary">那些每天冒出来的小问题，可能都是 TA 未来闪闪发光的开始。</p>
+            </div>
+          </article>
+          <div class="tag-row" id="tagRow"></div>
+          <button class="primary-action" type="button" id="resultNext">查看未来喜报预览</button>
+        </section>
+
+        <section class="screen" data-screen="photoPreview" hidden>
+          <p class="eyebrow">未来高光写真预览</p>
+          <h2>叮！宝宝喜报已送达</h2>
+          <article class="locked-photo">
+            <div class="future-photo">
+              <img id="futurePhoto" src="./assets/baby-gallery-portrait.png" alt="宝宝未来艺术家写真模糊预览" />
+              <span class="photo-lock" aria-hidden="true">高清版待解锁</span>
+            </div>
+            <div>
+              <strong id="sceneTitle">小小世界观察员</strong>
+              <p id="sceneCopy">宝宝穿着小探险服，认真观察发光星图。</p>
+            </div>
+          </article>
+
+          <button class="primary-action" type="button" id="photoNext">解锁高清写真</button>
+        </section>
+
+        <section class="screen" data-screen="pay" hidden>
+          <p class="lead">测试版本，不会真实付费</p>
+          <div class="plan-list" id="planList"></div>
+          <p class="plan-feedback" id="planFeedback">当前更感兴趣：超值版。</p>
+          <button class="primary-action" type="button" id="payNext">生成分享卡</button>
+        </section>
+
+        <section class="screen" data-screen="share" hidden>
+          <h2>来自未来的宝宝喜报</h2>
+          <article class="share-card">
+            <div class="share-head">
+              <span>宝宝的天赋报告</span>
+              <strong id="shareIdentity">小小世界观察员</strong>
+            </div>
+            <div class="share-photo">
+              <img id="sharePhoto" src="./assets/baby-gallery-portrait.png" alt="宝宝未来艺术家高清写真" />
+              <span>高清写真</span>
+            </div>
+            <div class="share-story">
+              <span>未来高光时刻</span>
+              <p id="shareStory">未来某一天，TA 把现在这些小小闪光点变成了一场自己的高光展。画面里，TA 像小小艺术家一样站在作品前，认真又开心地把心里的世界介绍给大家。</p>
+            </div>
+            <p class="share-section-title">宝宝的天赋报告</p>
+            <p id="shareCopy">这个宝宝对世界有很多很多好奇。那些突然冒出来的小问题，可能都是未来闪光的开始。</p>
+            <div class="share-tags" id="shareTags"></div>
+            <div class="share-radar">
+              <span>宝宝天赋图</span>
+              <canvas id="shareRadarCanvas" width="260" height="230" aria-label="喜报里的宝宝天赋六边形图"></canvas>
+            </div>
+            <footer>保存这张宝宝喜报，等 TA 长大后一起拆开看。</footer>
+          </article>
+
+          <button class="primary-action" type="button" id="shareNext">填写测试反馈</button>
+        </section>
+
+        <section class="screen" data-screen="feedback" hidden>
+          <p class="eyebrow">体验反馈</p>
+          <h2>谢谢你体验，想听听你的真实感受</h2>
+          <ol class="feedback-list">
+            <li>第一眼知道这个产品是在做什么吗？</li>
+            <li>上传宝宝照片这一步，你会不会有顾虑？</li>
+            <li>5 道生活小观察答起来麻烦吗？</li>
+            <li>宝宝天赋报告像不像你家宝宝？</li>
+            <li>最后那张宝宝喜报愿意保存或发给别人看吗？</li>
+            <li>如果写真效果足够好，9.9 / 19.9 / 29.9 哪一档你更可能选？</li>
+            <li>哪一步最吸引你？哪一步最想退出？</li>
+          </ol>
+          <button class="secondary-action" type="button" id="restartButton">重新体验一次</button>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
